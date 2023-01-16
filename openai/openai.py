@@ -1,7 +1,7 @@
 import requests
 
 # Replace YOUR_API_KEY with your actual API key
-api_key = "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"
+api_key = ""
 
 
 headers = {
