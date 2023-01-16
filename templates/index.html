@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Speech2Text</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
+
+    
+    
+  </head>
+  <body>
+    <h1>Use your Speech to Get Answers From AI!</h1>
+    
+    <div id="controls">
+  	 <button id="recordButton">Record</button>
+  	 <!-- <button id="pauseButton" hid>Pause</button> -->
+  	 <button id="stopButton" disabled>Stop</button>
+    </div>
+    <div>
+      
+      
+
+    </div>
+    
+    <!-- <div id="formats">Format: start recording to see sample rate</div> -->
+  	<div class="text_container">
+      <p><strong>Text</strong></p>
+      <div class = 'question'>
+        <div class="q_audio">
+          <p id="resp"></p>
+          <input type="text" class="d_input" id="qinput" value="" name="q"></input>
+        </div>
+        <div class="q_text">
+          <img src="" id="text" class="expand" onclick="showQuestionBox()"/>
+        </div>
+      </div>
+      <div class="answer">
+        <p id="ans"></p>
+      </div>
+      <input id="session_id" type="hidden" value="{{uid}}"/>
+    </div>
+  	<!-- <ol id="recordingsList"></ol> -->
+    <!-- <p> -->
+    <script>
+      document.getElementById('qinput').value=''
+      function showQuestionBox(){
+        var in_box=document.getElementById('qinput')
+        var btn=document.getElementById('text')
+        btn.classList.toggle('collapse')
+        if (in_box.classList.contains('d_input')){
+          in_box.classList.remove('d_input')
+          document.getElementById("resp").innerHTML=''
+          // document.getElementById('text').innerHTML='b'
+        }
+        else{
+          // const form=document.createElement('form')
+	        // form.method='post'
+	        // form.action='/'
+          // form.appendChild(in_box)
+          // document.body.appendChild(form)
+        	// form.submit()
+          var xhr=new XMLHttpRequest();
+          // var fd=new FormData();
+          // fd.append("q",blob,"audio_data");
+          var fd=new FormData();
+          fd.append("q",in_box.value)
+          fd.append("sid",document.getElementById("session_id").value)
+          xhr.open("POST","/",true);
+          // xhr.setRequestHeader('Content-Type',"application/x-www-form-urlencoded")
+          xhr.onload=function(e) {
+            if(this.readyState === 4) {
+              playAudio(xhr.response)
+            }
+          };
+          xhr.responseType='arraybuffer'
+          xhr.send(fd);
+          
+
+          in_box.classList.add('d_input')
+          // document.getElementById('text').innerHTML='a'
+          document.getElementById('qinput').value=''
+        }
+        
+        
+
+        // var btn=document.getElementById('text')
+        // console.log(btn.i)
+        
+      }
+    </script>
+      
+    
+    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+    
+  	<script src="static/recorder.js"></script>
+  	<script src="static/app.js"></script>
+    
+  </body>
+</html>

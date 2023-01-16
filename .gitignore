@@ -1,0 +1,4 @@
+gcp/credentials/*
+static/files/*
+templates/404.html
+about.odt
